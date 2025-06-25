@@ -52,9 +52,8 @@ class GaussianProcessModel:
         second_term = tf.reduce_sum(tf.math.log(tf.linalg.diag_part(L)))
         third_term = 0.5 * tf.cast(tf.shape(self.X_train)[0], tf.double) * tf.math.log(tf.constant(2.0, dtype=tf.double) * np.pi)
 
-        negative_log_likelihood = -1.0 * (first_term - second_term - third_term)
-
-        # we want negative marginal log likelihood so we minimize instead of maximize, .numpy() for scipy's minimize
+        negative_log_likelihood = (first_term + second_term + third_term)
+        
         return negative_log_likelihood.numpy()
 
     def fit(self, X_train, y_train):
@@ -208,4 +207,3 @@ plt.title('Gaussian Process Regression with Matern 3/2 Kernel')
 plt.legend()
 plt.grid(True, linestyle='--', alpha=0.7)
 plt.show()
-
